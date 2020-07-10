@@ -40,7 +40,10 @@ class ProductsSpider(scrapy.Spider):
         seller_name = response.xpath("//div[@id='sellerName']/span/span/text()").extract_first()
         rating = response.xpath("//div[@id='sellerName']/span/div/text()").extract_first()
         users_rated = response.xpath("//span[@class='_38sUEc']/span/span[1]/text()").extract_first()
-        image = response.xpath("//div[@class='_3BTv9X _3iN4zu']/img/@src").extract_first()
+        image_prop = response.xpath("//div[@class='_2_AcLJ']/@style").extract_first()
+        start = image_prop.find("url(")
+        end = image_prop.find(")")
+        image = image_prop[(start-1)+len("url('"):end]
         currency = self.get_symbol(listed_price)
         asin_text = response.url.split("?")[1]
         asin_pid = asin_text.split("&")[0]
